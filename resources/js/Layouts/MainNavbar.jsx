@@ -19,8 +19,11 @@ export default function MainNavbar() {
                     <Nav className="ms-auto">
                         <Nav.Link as={Link} href="/cart" className="position-relative">
                             <i className="bi bi-cart me-1"></i>
-                            Cart
+                           {auth?.user && (
+                             <span>Cart</span>
+                           )}
                             {cartCount > 0 && (
+                                
                                 <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
                                     {cartCount}
                                 </Badge>

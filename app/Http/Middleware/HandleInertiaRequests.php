@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
                     \App\Models\Cart::where('user_id', $request->user()->id)
                         ->where('status', 'active')
                         ->first()
-                )->cartProducts()->count() ?? 0
+                )->cartProducts()?->count() ?? 0
                 : 0,
         ];
     }

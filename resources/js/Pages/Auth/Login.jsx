@@ -3,8 +3,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import styles from '../../Auth.module.css';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,16 +22,19 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout>
+        <div className={styles['auth-bg']}>
             <Head title="Log in" />
-
-            {status && (
-                <div className="alert alert-success mb-4 py-2 px-3">
-                    {status}
+            <div className={styles['auth-card']}>
+                <div className={styles['auth-logo']}>
+                    <i className="bi bi-person-circle"></i>
                 </div>
-            )}
-
-            <form onSubmit={submit}>
+                <div className={styles['auth-title']}>تسجيل الدخول</div>
+                {status && (
+                    <div className="alert alert-success mb-4 py-2 px-3">
+                        {status}
+                    </div>
+                )}
+                <form onSubmit={submit} className={styles['auth-form']}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
                     <input
@@ -86,6 +89,10 @@ export default function Login({ status, canResetPassword }) {
                     </button>
                 </div>
             </form>
-        </GuestLayout>
+            <Link href={route('register')} className={styles['auth-link']}>
+                ليس لديك حساب؟ سجل الآن
+            </Link>
+            </div>
+        </div>
     );
 }

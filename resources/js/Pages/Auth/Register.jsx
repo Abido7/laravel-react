@@ -2,8 +2,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import styles from '../../Auth.module.css';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,10 +22,14 @@ export default function Register() {
     };
 
     return (
-        <GuestLayout>
+        <div className={styles['auth-bg']}>
             <Head title="Register" />
-
-            <form onSubmit={submit}>
+            <div className={styles['auth-card']}>
+                <div className={styles['auth-logo']}>
+                    <i className="bi bi-person-plus"></i>
+                </div>
+                <div className={styles['auth-title']}>إنشاء حساب جديد</div>
+                <form onSubmit={submit} className={styles['auth-form']}>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -33,7 +37,7 @@ export default function Register() {
                         id="name"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="form-control mt-1"
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
@@ -51,7 +55,7 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="form-control mt-1"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -68,7 +72,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="form-control mt-1"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
@@ -88,7 +92,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="form-control mt-1"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -107,14 +111,15 @@ export default function Register() {
                         href={route('login')}
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
-                        Already registered?
+                        لديك حساب؟ تسجيل الدخول
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                    <PrimaryButton className="btn btn-primary w-100 mt-3" disabled={processing}>
+                        تسجيل
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+            </div>
+        </div>
     );
 }

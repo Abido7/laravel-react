@@ -1,25 +1,21 @@
 import React from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import Layout from '../Layouts/Layout';
+import { Link } from '@inertiajs/react';
 
-const categories = [
-    { id: 1, name: 'Electronics', description: 'Gadgets and devices.' },
-    { id: 2, name: 'Fashion', description: 'Clothing and accessories.' },
-    { id: 3, name: 'Home', description: 'Home and living.' },
-];
-
-export default function Categories() {
+export default function Categories({ categories = [] }) {
   return (
     <Layout>
         <div className="container mt-5">
             <h2>Categories</h2>
             <div className="row mt-4">
-                {categories.map(category => (
+                {categories.length === 0 ? <p>No categories found.</p> : categories.map(category => (
                     <div className="col-md-4 mb-4" key={category.id}>
                         <div className="card h-100">
                             <div className="card-body">
                                 <h5 className="card-title">{category.name}</h5>
                                 <p className="card-text">{category.description}</p>
-                                <a href={`/products?category=${category.name}`} className="btn btn-outline-primary">View Products</a>
+                                <span className="badge bg-secondary mb-2">{category.products_count ?? 0} products</span><br />
+                                <Link href={`/categories/${category.id}`} className="btn btn-outline-primary mt-2">View Products</Link>
                             </div>
                         </div>
                     </div>
@@ -27,5 +23,5 @@ export default function Categories() {
             </div>
         </div>
     </Layout>
-);
+  );
 }

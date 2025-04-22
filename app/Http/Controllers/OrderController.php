@@ -9,10 +9,10 @@ use App\Models\User;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::where('email', 'test@example.com')->first();
-        $orders = $user ? Order::where('user_id', $user->id)->get() : [];
+        $user = $request->user();
+        $orders = $user ? Order::where('user_id', $user->id)->orderBy('created_at', 'desc')->get() : [];
         return Inertia::render('Orders', [
             'orders' => $orders
         ]);
@@ -33,8 +33,32 @@ class OrderController extends Controller
             'cart_id' => 'required|exists:carts,id',
             'total' => 'required|numeric',
             'status' => 'required|string',
+            'shipping_address' => 'nullable|string',
+            'city' => 'nullable|string',
+            'payment_method' => 'nullable|string',
         ]);
         $order = Order::create($data);
+
+        // Save order items (order details)
+        $cartProducts = \App\Models\CartProduct::where('cart_id', $data['cart_id'])->get();
+        foreach ($cartProducts as $cartProduct) {
+            \App\Models\OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $cartProduct->product_id,
+                'quantity' => $cartProduct->quantity,
+                'price' => $cartProduct->product->price, // Save price at time of order
+            ]);
+        }
+
+        // Mark the cart as ordered (do NOT delete it)
+        $cart = \App\Models\Cart::find($data['cart_id']);
+        if ($cart) {
+            $cart->status = 'ordered';
+            $cart->save();
+        }
+
+        // Return order with items
+        $order->load('orderItems.product');
         return response()->json($order, 201);
     }
 
@@ -53,5 +77,20 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->delete();
         return response()->json(['message' => 'Deleted']);
+    }
+
+    /**
+     * Cancel a pending order (user action)
+     */
+    public function cancel(Request $request, $id)
+    {
+        $user = $request->user();
+        $order = Order::where('id', $id)->where('user_id', $user ? $user->id : null)->firstOrFail();
+        if ($order->status !== 'pending') {
+            return response()->json(['message' => 'Only pending orders can be cancelled.'], 403);
+        }
+        $order->status = 'cancelled';
+        $order->save();
+        return response()->json(['message' => 'Order cancelled.']);
     }
 }

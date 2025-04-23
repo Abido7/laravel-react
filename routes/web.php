@@ -21,6 +21,8 @@ Route::delete('/cart/{id}', [\App\Http\Controllers\CartController::class, 'destr
 
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index']);
 Route::get('/orders/{id}', [\App\Http\Controllers\OrderController::class, 'show']);
+
+Route::get('/offers', [\App\Http\Controllers\OfferController::class, 'index']);
 Route::post('/orders', [\App\Http\Controllers\OrderController::class, 'store']);
 Route::post('/orders/{id}/cancel', [\App\Http\Controllers\OrderController::class, 'cancel'])->middleware('auth');
 

@@ -18,6 +18,7 @@ export default function MainNavbar() {
                         <Nav.Link as={Link} href="/">الرئيسيه</Nav.Link>
                         <Nav.Link as={Link} href="/products">المنتجات</Nav.Link>
                         <Nav.Link as={Link} href="/categories">الاقسام</Nav.Link>
+                        <Nav.Link as={Link} href="/offers">العروض</Nav.Link>
                         <Nav.Link as={Link} href="/orders">الطلبات</Nav.Link>
                     </Nav>
                     <Nav className="ms-auto">

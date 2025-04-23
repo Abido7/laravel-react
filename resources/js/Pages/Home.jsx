@@ -6,7 +6,7 @@ import { Link } from '@inertiajs/react';
 import ProductCard from '../Components/ProductCard';
 import { ToastContainer } from 'react-toastify';
 
-export default function Home({ categories = [], products = [], bannerImage }) {
+export default function Home({ categories = [], products = [], bannerImage, offers = [] }) {
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
 
@@ -45,6 +45,8 @@ export default function Home({ categories = [], products = [], bannerImage }) {
             {/* Optional: Decorative overlay shapes can be added here if desired */}
           </div>
         </div>
+     
+
         {/* Search Bar */}
 
         <div className="container">
@@ -82,7 +84,7 @@ export default function Home({ categories = [], products = [], bannerImage }) {
                   <p>لا يوجد منتجات</p>
                 ) : (
                   filteredProducts.map(product => (
-                    <div className="col-md-3 mb-4" key={product.id}>
+                    <div className="col-md-4 mb-4" key={product.id}>
                       <ProductCard product={product} />
                     </div>
                   ))

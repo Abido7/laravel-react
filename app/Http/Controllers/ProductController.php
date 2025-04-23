@@ -10,7 +10,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get();
+        $products = Product::with(['category', 'offers'])->get();
+        // Ensure discounted_price is included for each product
+        $products->each(function($product) {
+            $product->discounted_price = $product->discounted_price;
+        });
         $categories = \App\Models\Category::all();
         return Inertia::render('Products', [
             'products' => $products,
@@ -20,7 +24,8 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::with('category')->findOrFail($id);
+        $product = Product::with(['category', 'offers'])->findOrFail($id);
+        $product->discounted_price = $product->discounted_price;
         return Inertia::render('ProductDetails', [
             'product' => $product,
         ]);

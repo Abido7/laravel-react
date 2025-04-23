@@ -31,22 +31,24 @@ class OrderController extends Controller
         $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'cart_id' => 'required|exists:carts,id',
-            'total' => 'required|numeric',
             'status' => 'required|string',
             'shipping_address' => 'nullable|string',
             'city' => 'nullable|string',
             'payment_method' => 'nullable|string',
         ]);
-        $order = Order::create($data);
+        $order = Order::create(array_merge($data, ['total' => 0]));
 
-        // Save order items (order details)
+        // Save order items (order details) with offers applied
         $cartProducts = \App\Models\CartProduct::where('cart_id', $data['cart_id'])->get();
+        $offerService = new \App\Services\OfferService();
         foreach ($cartProducts as $cartProduct) {
+            $product = $cartProduct->product;
+            $discountedPrice = $offerService->getDiscountedPrice($product);
             \App\Models\OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $cartProduct->product_id,
                 'quantity' => $cartProduct->quantity,
-                'price' => $cartProduct->product->price, // Save price at time of order
+                'price' => $discountedPrice, // Save discounted price at time of order
             ]);
         }
 
@@ -56,6 +58,11 @@ class OrderController extends Controller
             $cart->status = 'ordered';
             $cart->save();
         }
+
+        // Recalculate and update the order total after discounts
+        $total = $order->orderItems()->sum(\DB::raw('price * quantity'));
+        $order->total = $total;
+        $order->save();
 
         // Return order with items
         $order->load('orderItems.product');

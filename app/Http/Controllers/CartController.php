@@ -15,13 +15,15 @@ class CartController extends Controller
         $cart = $user ? \App\Models\Cart::where('user_id', $user->id)->where('status', 'active')->first() : null;
         $items = [];
         if ($cart) {
-            $items = \App\Models\CartProduct::with('product')
+            $items = \App\Models\CartProduct::with(['product.offers'])
                 ->where('cart_id', $cart->id)
                 ->get()
                 ->map(function ($cartProduct) {
+                    $product = $cartProduct->product;
+                    $product->discounted_price = $product->discounted_price;
                     return [
                         'id' => $cartProduct->id,
-                        'product' => $cartProduct->product,
+                        'product' => $product,
                         'quantity' => $cartProduct->quantity,
                     ];
                 });

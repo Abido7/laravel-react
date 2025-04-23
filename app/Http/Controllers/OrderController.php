@@ -20,7 +20,7 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        $order = Order::with('cart', 'user')->findOrFail($id);
+        $order = Order::with('cart', 'orderItems','orderItems.product','user')->findOrFail($id);
         return Inertia::render('OrderShow', [
             'order' => $order
         ]);

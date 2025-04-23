@@ -26,7 +26,7 @@ export default function ProductDetails({ product }) {
 
     return (
         <Layout>
-            <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+            <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-lg-10">

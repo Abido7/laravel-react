@@ -16,7 +16,7 @@ export default function Checkout({ user, cart, total }) {
         setErrors({});
         setSuccess('');
         if (!user || !cart) {
-            setErrors({ general: 'You must be logged in and have an active cart to place an order.' });
+            setErrors({ general: 'يجب تسجيل الدخول اولا' });
             setLoading(false);
             return;
         }
@@ -62,7 +62,7 @@ export default function Checkout({ user, cart, total }) {
         <Layout>
             <div className="container mt-5">
                 <div className={styles['checkout-card']}>
-                    <h2 className={styles['checkout-header']}><i className="bi bi-cart-check me-2"></i>Checkout</h2>
+                    <h2 className={styles['checkout-header']}><i className="bi bi-cart-check me-2"></i>الدفع</h2>
                     {success && (
                         <div style={{color: '#198754', fontWeight: 600, marginBottom: 16, textAlign: 'center'}}>
                             <i className="bi bi-check-circle me-1"></i>{success}
@@ -75,7 +75,7 @@ export default function Checkout({ user, cart, total }) {
                     )}
                     <form className="mt-4" onSubmit={handleSubmit}>
                         <div>
-                            <label className={styles['checkout-label']}>Shipping Address</label>
+                            <label className={styles['checkout-label']}>العنوان</label>
                             <input
                                 type="text"
                                 className={styles['checkout-input']}
@@ -91,7 +91,7 @@ export default function Checkout({ user, cart, total }) {
                             )}
                         </div>
                         <div>
-                            <label className={styles['checkout-label']}>City</label>
+                            <label className={styles['checkout-label']}>المدينة</label>
                             <input
                                 type="text"
                                 className={styles['checkout-input']}
@@ -107,13 +107,13 @@ export default function Checkout({ user, cart, total }) {
                             )}
                         </div>
                         <div>
-                            <label className={styles['checkout-label']}>Payment Method</label>
+                            <label className={styles['checkout-label']}>طريقة الدفع</label>
                             <select
                                 className={styles['checkout-select']}
                                 value={payment}
                                 onChange={e => setPayment(e.target.value)}
                             >
-                                <option>Cash</option>
+                                <option>نقدي</option>
                             </select>
                             {errors.payment_method && (
                                 <div style={{color: '#dc3545', fontSize: '0.98rem', marginTop: 2}}>
@@ -127,7 +127,7 @@ export default function Checkout({ user, cart, total }) {
                             disabled={loading}
                         >
                             <i className="bi bi-bag-check me-2"></i>
-                            {loading ? 'Placing Order...' : 'Place Order'}
+                            {loading ? 'جاري التسجيل' : 'الدفع'}
                         </button>
                     </form>
                 </div>

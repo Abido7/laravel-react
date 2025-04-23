@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import Layout from '../Layouts/Layout';
+import styles from '../Cart.module.css';
 import { router } from '@inertiajs/react';
 import toast from '../toast';
 import { ToastContainer } from 'react-toastify';
+import { Link } from '@inertiajs/react';
 
 export default function Cart({ cart, items = [] }) {
   const [updating, setUpdating] = useState(null);
@@ -41,55 +43,52 @@ export default function Cart({ cart, items = [] }) {
 
   return (
     <Layout>
-      <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
-      <div className="container mt-5">
-        <h2>Your Cart</h2>
+      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      <div className={styles['cart-container']}>
+        <div className={styles['cart-title']}>🛒 سلة المشتريات</div>
         {items.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <>
+            <p> لا يوجد منتجات في السلة</p>
+            <Link href="/products" className={styles['cart-empty-link']}>
+              <i className="bi bi-arrow-left me-1"></i>
+              اضافة منتجات
+            </Link>
+          </>
         ) : (
           <>
-            <table className="table align-middle">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>Qty</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map(item => (
-                  <tr key={item.id}>
-                    <td>{item.product.name}</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-light btn-sm" disabled={updating === item.id} onClick={() => handleUpdateQuantity(item, item.quantity - 1)}>-</button>
-                        <input
-                          type="number"
-                          min="1"
-                          value={item.quantity}
-                          style={{ width: 50, textAlign: 'center', margin: '0 6px' }}
-                          disabled={updating === item.id}
-                          onChange={e => handleUpdateQuantity(item, parseInt(e.target.value) || 1)}
-                        />
-                        <button className="btn btn-light btn-sm" disabled={updating === item.id} onClick={() => handleUpdateQuantity(item, item.quantity + 1)}>+</button>
-                      </div>
-                    </td>
-                    <td>${item.product.price}</td>
-                    <td>${(item.product.price * item.quantity).toFixed(2)}</td>
-                    <td>
-                      <button className="btn btn-danger btn-sm" disabled={updating === item.id} onClick={() => handleRemove(item)}>
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="d-flex justify-content-between align-items-center mt-4">
-              <h4>Total: ${total.toFixed(2)}</h4>
-              <a href="/checkout" className="btn btn-success btn-lg">Checkout</a>
+            <div className={styles['cart-items-list']}>
+              {items.map(item => (
+                <div className={styles['cart-item-card']} key={item.id}>
+                  <img
+                    src={item.product.image || 'https://via.placeholder.com/90x90'}
+                    alt={item.product.name}
+                    className={styles['cart-item-image']}
+                  />
+                  <div className={styles['cart-item-info']}>
+                    <div className={styles['cart-item-title']}>{item.product.name}</div>
+                    <div className={styles['cart-item-price']}>${item.product.price}</div>
+                    <div className={styles['cart-item-qty']}>
+                      <button className="btn btn-light btn-sm" disabled={updating === item.id} onClick={() => handleUpdateQuantity(item, item.quantity - 1)}>-</button>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        disabled={updating === item.id}
+                        onChange={e => handleUpdateQuantity(item, parseInt(e.target.value) || 1)}
+                      />
+                      <button className="btn btn-light btn-sm" disabled={updating === item.id} onClick={() => handleUpdateQuantity(item, item.quantity + 1)}>+</button>
+                      <span style={{ marginLeft: '1.2em', fontWeight: '600', color: '#6f42c1' }}>Total: ${(item.product.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <button className={styles['cart-item-remove']} disabled={updating === item.id} onClick={() => handleRemove(item)}>
+                    حذف
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className={styles['cart-summary']}>
+              <a href="/checkout" className={styles['cart-summary-checkout']}>الانتقال للدفع</a>
+              <div className={styles['cart-summary-total']}>الاجمالى: {total.toFixed(2)}</div>
             </div>
           </>
         )}

@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.arabic-font, body[dir="rtl"] {
+  font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Amiri', 'Arial', sans-serif !important;
+  letter-spacing: 0.01em;
+  font-size: 1.2em;
+}
+
+/* Add this to handle font loading */
+
+  body {
+    font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Amiri', 'Arial', sans-serif !important;
+    font-size: 1.2em;
+  }
+

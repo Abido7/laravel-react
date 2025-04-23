@@ -65,3 +65,14 @@
   display: inline-block;
   margin-bottom: 1.1rem;
 }
+
+/* Remove number input arrows for all browsers in product details */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: none;
+}

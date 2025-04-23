@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $fillable = [
+        'category_id',
+        'name',
+        'price',
+        'stock',
+        'description',
+        'image',
+    ];
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
@@ -30,4 +38,15 @@ class Product extends Model
     // {
     //     return $this->hasMany(Payment::class);
     // }
+
+    public function getImageAttribute($value)
+    {
+        if ($value && \Illuminate\Support\Str::contains($value, 'placehold.co')) {
+            return $value;
+        } elseif ($value) {
+            return asset('storage/' . $value);
+        } else {
+            return null;
+        }
+    }
 }

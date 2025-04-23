@@ -10,10 +10,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -38,6 +35,15 @@ class AppServiceProvider extends ServiceProvider
                     }
                 }
                 return 0;
+            },
+            // Robust logo URL logic: handles public/images, storage, and absolute URLs
+            'logoUrl' => function () {
+                $logo = \App\Models\Setting::where('key', 'logo')->value('value');
+                if (!$logo) {
+                    return null;
+                }
+                $logo = \Illuminate\Support\Str::replaceFirst('storage/', '', $logo);
+                return asset($logo);
             },
         ]);
     }

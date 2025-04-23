@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }) {
                 )}
                 <form onSubmit={submit} className={styles['auth-form']}>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email</label>
+                    <label htmlFor="email" className="form-label">البريد الالكتروني</label>
                     <input
                         id="email"
                         type="email"
@@ -50,7 +50,7 @@ export default function Login({ status, canResetPassword }) {
                     {errors.email && <div className="text-danger small mt-1">{errors.email}</div>}
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password</label>
+                    <label htmlFor="password" className="form-label">كلمة السر</label>
                     <input
                         id="password"
                         type="password"
@@ -72,7 +72,7 @@ export default function Login({ status, canResetPassword }) {
                         onChange={e => setData('remember', e.target.checked)}
                     />
                     <label className="form-check-label" htmlFor="remember">
-                        Remember me
+                        تذكرني
                     </label>
                 </div>
                 <div className="d-flex justify-content-between align-items-center mb-3">
@@ -81,11 +81,11 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="text-decoration-none small"
                         >
-                            Forgot your password?
+                            هل نسيت كلمة السر؟
                         </Link>
                     )}
                     <button type="submit" className="btn btn-primary ms-auto" disabled={processing}>
-                        Log in
+                        تسجيل الدخول
                     </button>
                 </div>
             </form>

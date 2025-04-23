@@ -26,18 +26,18 @@ export default function ProductCard({ product }) {
         <div className={styles['product-desc']}>{product.description}</div>
         <div className={styles['price-btn-row']}>
           <div className={styles['product-price']}><i className="bi bi-currency-dollar"></i>{product.price}</div>
+          <Link href={`/products/${product.id}`} className={styles['view-btn']}><i className="bi bi-eye me-1"></i> عرض</Link>
         </div>
-        <div className="d-flex gap-2 mt-3">
+        <div style={{marginTop: 'auto'}}>
           <button
             className={styles['add-cart-btn'] + " btn btn-success btn-sm"}
             onClick={handleAddToCart}
             title="Add to Cart"
+            style={{width: '100%'}}
           >
             <i className="bi bi-cart-plus"></i>
-            <span className="mx-1">اضافة الي السله
-            </span>
+            <span className="mx-1">اضافة الي السله</span>
           </button>
-          <Link href={`/products/${product.id}`} className={styles['view-btn']}><i className="bi bi-eye me-1"></i> عرض</Link>
         </div>
       </div>
     </div>

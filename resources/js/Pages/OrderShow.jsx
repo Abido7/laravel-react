@@ -30,7 +30,14 @@ export default function OrderShow() {
           <div className="card-header d-flex justify-content-between align-items-center">
             <h3 className="mb-0"># {order.id}</h3>
             <span className={styles['status-badge'] + ' ' + styles[`status-${order.status}`]}>
-              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              {(() => {
+                const statusMap = {
+                  pending: 'قيد الانتظار',
+                  completed: 'مكتمل',
+                  cancelled: 'ملغي',
+                };
+                return statusMap[order.status] || order.status;
+              })()}
             </span>
           </div>
           <div className="card-body">
@@ -81,14 +88,14 @@ export default function OrderShow() {
                   ))
                 ) : (
                   <div className="col-12">
-                    <div className="alert alert-warning">No items found.</div>
+                    <div className="alert alert-warning">لا يوجد منتجات</div>
                   </div>
                 )}
               </div>
               <div className="d-flex justify-content-end mt-4">
                 <div className="card p-3 bg-light border-0 shadow-sm" style={{ minWidth: '260px' }}>
                   <div className="d-flex justify-content-between align-items-center mb-2">
-                    <span className="fw-semibold">Total:</span>
+                    <span className="fw-semibold">الاجمالى:</span>
                     <span className="fs-5 text-primary">${order.total}</span>
                   </div>
                 </div>
@@ -96,7 +103,7 @@ export default function OrderShow() {
             </div>
             {order.notes && (
               <div className="mb-3">
-                <strong>Notes:</strong> {order.notes}
+                <strong>ملاحظات:</strong> {order.notes}
               </div>
             )}
           </div>

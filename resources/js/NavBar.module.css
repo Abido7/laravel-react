@@ -1,0 +1,83 @@
+.navbar-premium {
+  width: 100vw;
+  background: #ffe600;
+  display: flex;
+  align-items: center;
+  padding: 0.35rem 2.2vw;
+  min-height: 48px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+  position: relative;
+  z-index: 10;
+}
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 1.1em;
+}
+.logo {
+  height: 32px;
+  margin-right: 0.8em;
+}
+.deliverTo {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  font-size: 0.97em;
+  color: #222;
+  gap: 0.3em;
+}
+.flag {
+  width: 22px;
+  margin-right: 0.35em;
+  border-radius: 3px;
+  box-shadow: 0 0 2px #aaa;
+}
+.caret {
+  font-size: 0.85em;
+  color: #222;
+  margin-left: 0.25em;
+}
+.searchBar {
+  flex: 1 1 0;
+  margin: 0 1.8vw;
+  border-radius: 6px;
+  border: none;
+  padding: 0.68em 1.15em;
+  font-size: 1.08em;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  outline: none;
+  transition: box-shadow 0.18s;
+}
+.searchBar:focus {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.11);
+}
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.link {
+  color: #222;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 1em;
+  transition: color 0.16s;
+}
+.link:hover {
+  color: #ffb347;
+}
+.separator {
+  color: #b9b900;
+  margin: 0 0.5em;
+  font-size: 1.15em;
+}
+.iconBtn {
+  color: #222;
+  font-size: 1.25em;
+  margin: 0 0.15em;
+  transition: color 0.16s;
+}
+.iconBtn:hover {
+  color: #ff4f7a;
+}

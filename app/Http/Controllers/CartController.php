@@ -87,7 +87,7 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Product added to cart!');
+        return redirect()->back()->with('success', 'تم الاضافه للسلة');
     }
 
     public function update(Request $request, $id)
@@ -106,7 +106,7 @@ class CartController extends Controller
         ]);
         $cartProduct->quantity = $data['quantity'];
         $cartProduct->save();
-        return redirect()->back()->with('success', 'Cart updated!');
+        return redirect()->back()->with('success', 'تم التحديث السله');
     }
 
     public function destroy(Request $request, $id)
@@ -121,6 +121,6 @@ class CartController extends Controller
             return redirect()->back()->with('error', 'Cart item not found.');
         }
         $cartProduct->delete();
-        return redirect()->back()->with('success', 'Item removed!');
+        return redirect()->back()->with('success', 'تم الحذف من السلة');
     }
 }

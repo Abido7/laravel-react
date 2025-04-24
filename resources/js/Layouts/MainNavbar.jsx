@@ -4,7 +4,7 @@ import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap';
 import styles from './MainNavbar.module.css';
 
 export default function MainNavbar() {
-    const { auth, cartCount = 0 } = usePage().props;
+    const { auth, cartCount = 0, wishlistCount = 0 } = usePage().props;
     const [search, setSearch] = React.useState("");
 
     const handleSearchSubmit = (e) => {
@@ -21,7 +21,7 @@ export default function MainNavbar() {
             <div className={styles['creative-gradient-bar']} />
             <Container>
                 <Navbar.Brand as={Link} href="/" className={styles['creative-brand']}>
-                    <img src={usePage().props.logoUrl || '/logo.png'} alt="Logo" style={{height: 36, marginRight: 8, borderRadius: '10px', boxShadow: '0 2px 12px #a084e833'}} />
+                    <img src={usePage().props.logoUrl || '/logo.png'} alt="Logo" style={{ height: 36, marginRight: 8, borderRadius: '10px', boxShadow: '0 2px 12px #a084e833' }} />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="main-navbar-nav" />
                 <Navbar.Collapse id="main-navbar-nav">
@@ -49,8 +49,8 @@ export default function MainNavbar() {
                     </form>
                     <Nav className="ms-auto">
                         <Nav.Link as={Link} href="/cart" className={`position-relative mx-3 ${styles['creative-link']}`}>
-                           {auth?.user && (
-                               <span>السله</span>
+                            {auth?.user && (
+                                <span>السله</span>
                             )}
                             <i className={`bi bi-cart ${styles['creative-icon']}`}></i>
                             {cartCount > 0 && (
@@ -59,14 +59,26 @@ export default function MainNavbar() {
                                 </span>
                             )}
                         </Nav.Link>
+                        <Nav.Link as={Link} href="/wishlist" className={`position-relative mx-3 ${styles['creative-link']}`}>
+                            {auth?.user && (
+                                <span>المفضلة</span>
+                            )}
+                            <i className={`bi bi-heart ${styles['creative-icon']}`}></i>
+                            {wishlistCount > 0 && (
+                                <span className={styles['creative-cart-badge']}>
+                                    {wishlistCount}
+                                </span>
+                            )}
+                        </Nav.Link>
                         {auth?.user ? (
-                            <NavDropdown title={<span className={styles['creative-link']}>{auth.user.name}</span>} id="user-nav-dropdown" align="end" className={styles['creative-link']} menuVariant="light">
-                                <NavDropdown.Item as={Link} href="/logout" method="post" className={styles['creative-link']}>تسجيل الخروج</NavDropdown.Item>
-                            </NavDropdown>
+                            <Nav.Link as={Link} href="/logout" method="post" className={styles['creative-link']}>تسجيل الخروج</Nav.Link>
+                            // <NavDropdown title={<span className={styles['creative-link']}>{auth.user.name}</span>} id="user-nav-dropdown" align="end" className={styles['creative-link']} menuVariant="light">
+                            //     <NavDropdown.Item as={Link} href="/logout" method="post" className={styles['creative-link']}>تسجيل الخروج</NavDropdown.Item>
+                            // </NavDropdown>
                         ) : (
                             <>
                                 <Nav.Link as={Link} href="/login" className={styles['creative-link']}>تسجيل الدخول</Nav.Link>
-                                <Nav.Link as={Link} href="/register" className={styles['creative-link']}>تسجيل جديد</Nav.Link>
+                                <Nav.Link as={Link} href="/register" className={styles['creative-link']}>انشاء حساب</Nav.Link>
                             </>
                         )}
                     </Nav>

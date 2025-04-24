@@ -13,11 +13,11 @@ export default function ProductDetails({ product }) {
         setAdding(true);
         router.post('/cart', { product_id: product.id, quantity }, {
             onSuccess: () => {
-                toast.success('Product added to cart!');
+                toast.success('تم الاضافه للسلة');
                 setAdding(false);
             },
             onError: () => {
-                toast.error('Failed to add to cart.');
+                toast.error('حدث خطأ');
                 setAdding(false);
             },
             preserveScroll: true,
@@ -43,7 +43,7 @@ export default function ProductDetails({ product }) {
                                     <div className={styles['price-badge']}>${product.price}</div>
                                     <p className="text-secondary mb-4" style={{ fontSize: '1.1rem' }}>{product.description}</p>
                                     <div className="d-flex align-items-center mb-3">
-                                        <span className="me-2 fw-semibold">Quantity:</span>
+                                        <span className="me-2 fw-semibold">الكمية:</span>
                                         <button className="btn btn-light border px-2 py-1" style={{fontSize:'1.2rem'}} disabled={quantity <= 1 || adding} onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
                                         <input
                                             type="number"

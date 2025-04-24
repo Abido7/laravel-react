@@ -9,6 +9,11 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public function wishlist()
+    {
+        return $this->belongsToMany(\App\Models\Product::class, 'wishlists')->withTimestamps();
+    }
+
     /**
      * Get the orders for the user.
      */

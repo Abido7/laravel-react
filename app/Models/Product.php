@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    public function wishedBy()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'wishlists')->withTimestamps();
+    }
+
     public function offers()
     {
         return $this->hasMany(Offer::class);

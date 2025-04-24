@@ -1,0 +1,86 @@
+.wishlist-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 60%, #e9e4f0 100%);
+  padding: 48px 0 32px 0;
+}
+
+.wishlist-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #3d246c;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 12px #a084e833;
+  letter-spacing: 0.02em;
+}
+
+.premium-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 28px #a084e833;
+  transition: transform 0.15s, box-shadow 0.15s;
+  border: none;
+  overflow: hidden;
+  position: relative;
+}
+.premium-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 36px #a084e877;
+}
+
+.premium-img {
+  border-radius: 12px 12px 0 0;
+  object-fit: cover;
+  height: 180px;
+  width: 100%;
+  box-shadow: 0 2px 12px #a084e822;
+}
+
+.premium-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px 12px 16px;
+  min-height: 170px;
+}
+
+.premium-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #3d246c;
+  margin-bottom: 0.5rem;
+}
+.premium-desc {
+  font-size: 0.98rem;
+  color: #5e548e;
+  margin-bottom: 0.7rem;
+  min-height: 38px;
+}
+.premium-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffb700;
+}
+.premium-remove-btn {
+  background: #fff0f3;
+  border: 1px solid #ffb3c6;
+  color: #ff4d6d;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  padding: 4px 10px;
+  transition: background 0.2s, color 0.2s;
+}
+.premium-remove-btn:hover {
+  background: #ffb3c6;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .premium-card-body {
+    padding: 14px 10px 10px 10px;
+  }
+  .premium-img {
+    height: 120px;
+  }
+  .wishlist-title {
+    font-size: 1.5rem;
+  }
+}

@@ -19,7 +19,8 @@ export default function Home({ categories = [], products = [], bannerImage, offe
 
   return (
     <>
-      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar={false} newestOnTop
+       closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
       <Layout>
         {/* Clean Card-Style Banner Section */}
         <div className="container my-5 arabic-font">

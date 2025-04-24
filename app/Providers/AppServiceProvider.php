@@ -36,6 +36,13 @@ class AppServiceProvider extends ServiceProvider
                 }
                 return 0;
             },
+            'wishlistCount' => function () {
+                $user = auth()->user();
+                if ($user) {
+                    return $user->wishlist()->count();
+                }
+                return 0;
+            },
             // Robust logo URL logic: handles public/images, storage, and absolute URLs
             'logoUrl' => function () {
                 $logo = \App\Models\Setting::where('key', 'logo')->value('value');

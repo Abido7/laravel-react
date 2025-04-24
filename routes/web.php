@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -62,6 +63,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/test-auth', function () {
     return response()->json(['user' => auth()->user()]);
 })->middleware('auth');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/wishlist/toggle/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

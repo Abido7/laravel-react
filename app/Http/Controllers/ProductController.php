@@ -8,9 +8,19 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'offers'])->get();
+        $query = Product::with(['category', 'offers']);
+
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $products = $query->get();
         // Ensure discounted_price is included for each product
         $products->each(function($product) {
             $product->discounted_price = $product->discounted_price;
@@ -19,6 +29,7 @@ class ProductController extends Controller
         return Inertia::render('Products', [
             'products' => $products,
             'categories' => $categories,
+            'search' => $request->search,
         ]);
     }
 

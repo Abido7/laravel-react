@@ -10,3 +10,250 @@
     display: inline-block;
     text-align: center;
 }
+
+.creative-cart-badge {
+    background: linear-gradient(90deg, #ffb347 60%, #a084e8 100%);
+    color: #fff;
+    font-size: 0.95em;
+    font-weight: 900;
+    border-radius: 50px;
+    padding: 0.32em 0.7em;
+    box-shadow: 0 2px 8px #a084e822;
+    border: none;
+    position: absolute;
+    left: 0.7em;
+    top: -0.7em;
+    transform: translate(0, 0);
+    z-index: 2;
+    min-width: 24px;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.creative-navbar {
+    position: relative;
+    background: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 4px 32px 0 rgba(160, 132, 232, 0.13), 0 2px 8px #ffb34733;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 1.7rem;
+    border: 1.5px solid #f3e8ff;
+    margin: 1.4rem 0 2.3rem 0;
+    padding: 1.3rem 2vw 1.3rem 2vw;
+    font-family: 'Cairo', 'Figtree', sans-serif;
+    z-index: 10;
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.creative-navbar .navbar-brand {
+    margin-left: 0.7em;
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.creative-navbar .navbar-collapse {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2vw;
+}
+
+.creative-navbar .navbar-nav {
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 1.2em;
+    margin: 0 1vw;
+}
+
+.creative-navbar .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.creative-navbar form {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin: 0 1.2em;
+}
+
+
+.creative-gradient-bar {
+    position: absolute;
+    left: 1vw;
+    right: 1vw;
+    top: 0;
+    height: 8px;
+    border-radius: 14px 14px 0 0;
+    background: linear-gradient(90deg, #ffb347 0%, #a084e8 50%, #ff4f7a 100%);
+    background-size: 200% 100%;
+    animation: gradientMove 3.5s linear infinite;
+    z-index: 11;
+    filter: blur(2px);
+    opacity: 0.95;
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.creative-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: inherit;
+}
+.creative-brand-badge {
+    background: linear-gradient(90deg, #ffb347 60%, #a084e8 100%);
+    color: #fff;
+    font-weight: 900;
+    font-size: 1.18rem;
+    border-radius: 999px;
+    padding: 0.28em 1.4em 0.28em 1.2em;
+    margin-right: 0.2em;
+    box-shadow: 0 2px 10px #a084e822;
+    letter-spacing: 1.5px;
+    display: inline-block;
+}
+.creative-brand img {
+    height: 38px;
+    width: auto;
+    border-radius: 12px;
+    margin-left: 0.3em;
+    box-shadow: 0 2px 12px #a084e833;
+}
+
+.creative-link {
+    color: #53389e !important;
+    font-weight: 800;
+    font-size: 0.9em;
+    border-radius: 12px;
+    padding: 0.55em 1.5em;
+    margin: 0 0.23em;
+    background: transparent;
+    transition: background 0.22s, color 0.22s, box-shadow 0.22s, font-weight 0.18s;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+.creative-link:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ffb347 0%, #a084e8 100%);
+    border-radius: 2px;
+    transition: width 0.28s cubic-bezier(.4,0,.2,1), right 0.28s cubic-bezier(.4,0,.2,1);
+}
+.creative-link:hover, .creative-link:focus {
+    background: rgba(255, 179, 71, 0.11);
+    color: #a084e8 !important;
+    font-weight: 900;
+    box-shadow: 0 2px 16px #ffb34733;
+}
+.creative-link:hover:after, .creative-link:focus:after {
+    width: 88%;
+    right: 6%;
+}
+.creative-link:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ffb347 0%, #a084e8 100%);
+    border-radius: 2px;
+    transition: width 0.28s cubic-bezier(.4,0,.2,1), left 0.28s cubic-bezier(.4,0,.2,1);
+}
+.creative-link:hover, .creative-link:focus {
+    background: rgba(255, 179, 71, 0.13);
+    color: #ff4f7a !important;
+    box-shadow: 0 2px 16px #ffb34733;
+}
+.creative-link:hover:after, .creative-link:focus:after {
+    width: 88%;
+    left: 6%;
+}
+
+.creative-search {
+    background: #fff;
+    border-radius: 0 999px 999px 0;
+    border: 1.7px solid #a084e8;
+    border-left: none;
+    box-shadow: 0 1px 8px rgba(160, 132, 232, 0.09);
+    font-size: 0.9em !important;
+    font-weight: 600 !important;
+    padding: 0.54em 1.3em 0.54em 1.3em;
+    transition: box-shadow 0.18s, border 0.18s, background 0.18s;
+    min-width: 0;
+    width: 210px;
+    outline: none;
+    direction: rtl;
+    margin-left: 0;
+    height: 44px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.creative-search:focus {
+    box-shadow: 0 2px 18px #a084e8bb, 0 0px 0px #ffb347;
+    border: 1.7px solid #ffb347;
+    background: #fffbe7;
+}
+
+.creative-btn {
+    /* background: linear-gradient(90deg, #a084e8 60%, #ffb347 100%); */
+    color: #fff;
+    font-weight: 900;
+    border: none;
+    border-radius: 999px 0 0 999px;
+    padding: 0 1.5em;
+    font-size: 1.1em;
+    margin: 0;
+    box-shadow: 0 2px 12px #a084e822;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    position: relative;
+    left: -4px;
+    z-index: 2;
+    vertical-align: middle;
+}
+.creative-btn:hover {
+    background: linear-gradient(90deg, #ffb347 60%, #a084e8 100%);
+    color: #fffbe7;
+    box-shadow: 0 4px 24px #ffb34744;
+}
+
+.creative-btn .creative-icon {
+    font-size: 1.28em !important;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.creative-icon {
+    color: #a084e8;
+    font-size: 1.32em;
+    margin: 0 0.15em;
+    transition: color 0.16s, transform 0.18s;
+    vertical-align: middle;
+}
+.creative-btn:hover .creative-icon {
+    color: #ffb347;
+    transform: scale(1.2) rotate(-10deg);
+}
+

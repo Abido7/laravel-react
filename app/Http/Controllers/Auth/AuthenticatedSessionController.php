@@ -29,10 +29,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Find user by email
+        $user = \App\Models\User::where('email', $request->email)->first();
+        if ($user && $user->type === 'vendor') {
+            return back()->withErrors([
+                'email' => 'البائعون لا يمكنهم تسجيل الدخول من هنا. الرجاء استخدام بوابة البائع.',
+            ]);
+        }
+
         $request->authenticate();
-
         $request->session()->regenerate();
-
         return redirect()->intended(route('home', absolute: false));
     }
 

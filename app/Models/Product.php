@@ -7,6 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $fillable = [
+        'vendor_id',
+        'category_id',
+        'name',
+        'price',
+        'stock',
+        'description',
+        'image',
+        'status',
+    ];
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
     public function wishedBy()
     {
         return $this->belongsToMany(\App\Models\User::class, 'wishlists')->withTimestamps();
@@ -37,14 +53,6 @@ class Product extends Model
         return $this->price;
     }
 
-    protected $fillable = [
-        'category_id',
-        'name',
-        'price',
-        'stock',
-        'description',
-        'image',
-    ];
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 

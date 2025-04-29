@@ -32,20 +32,36 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => 'required|string|max:20',
+            'registerAsVendor' => 'nullable|boolean',
+            'vendorName' => 'nullable|string|max:255',
         ]);
-
+        // dd($request->registerAsVendor && $request->vendorName);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'type' => ($request->registerAsVendor && $request->vendorName) ? 'vendor' : 'customer',
+            'status' => ($request->registerAsVendor && $request->vendorName) ? 'pending' : 'active',
         ]);
 
+        // Vendor registration logic
+        if ($request->registerAsVendor && $request->vendorName) {
+            \App\Models\Vendor::create([
+                'user_id' => $user->id,
+                'name' => $request->vendorName,
+                'status' => 'pending',
+            ]);
+            // Redirect to waiting page
+            return redirect()->route('vendor.waiting');
+        }
         event(new Registered($user));
-
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+
+        return redirect()->route('login')->with('success', 'تم التسجيل بنجاح.');
     }
 }

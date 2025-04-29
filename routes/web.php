@@ -5,6 +5,10 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+Route::get('/vendor/waiting', function () {
+    return Inertia::render('Auth/VendorPending');
+})->name('vendor.waiting');
+
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -60,6 +64,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Admin routes for vendor approval
+Route::post('/admin/vendors/{id}/approve', [\App\Http\Controllers\Admin\VendorController::class, 'approve'])->name('admin.vendor.approve');
+Route::post('/admin/vendors/{id}/reject', [\App\Http\Controllers\Admin\VendorController::class, 'reject'])->name('admin.vendor.reject');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    // Example: Route::get('/admin/vendors', [AdminVendorController::class, 'index'])->name('admin.vendors.index');
+    // Example: Route::post('/admin/vendors/{vendor}/approve', [AdminVendorController::class, 'approve'])->name('admin.vendors.approve');
+});
+
 Route::get('/test-auth', function () {
     return response()->json(['user' => auth()->user()]);
 })->middleware('auth');
@@ -68,9 +80,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('/wishlist/toggle/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';

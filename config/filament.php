@@ -98,4 +98,26 @@ return [
 
     'system_route_prefix' => 'filament',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Guard
+    |--------------------------------------------------------------------------
+    |
+    | This option allows you to specify the authentication guard that Filament
+    | should use. Set this to 'vendor' so vendors can log in to the admin panel.
+    |
+    */
+    'auth' => [
+        'guard' => 'web',
+        'redirects' => [
+            'login' => function () {
+                $user = auth()->user();
+                if ($user && $user->type === 'vendor') {
+                    return \Filament\Facades\Filament::getUrl('vendor-dashboard');
+                }
+                return \Filament\Facades\Filament::getUrl('dashboard');
+            },
+        ],
+    ],
+
 ];

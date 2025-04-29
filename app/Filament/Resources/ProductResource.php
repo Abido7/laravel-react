@@ -2,13 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use Spatie\Image\Image as SpatieImage;
-use Spatie\Image\Enums\Fit;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,10 +12,26 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
+    protected static ?string $navigationGroup = 'البائعين';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+        if ($user && $user->hasRole('vendor')) {
+            return parent::getEloquentQuery()->where('vendor_id', $user->vendor->id ?? 0);
+        }
+        return parent::getEloquentQuery();
+    }
+
+    public static function canViewAny(): bool
+    {
+        // Only vendors and admins can see this resource in navigation
+        return auth()->check() && auth()->user()->hasAnyRole(['admin', 'vendor']);
+    }
+
     /**
      * Resize image before saving product (on create)
      */
@@ -54,6 +66,21 @@ class ProductResource extends Resource
                     ->disk('public')
                     ->nullable(),
                 Forms\Components\Textarea::make('description'),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ])
+                    ->default('pending')
+                    ->required()
+                    ->visible(fn () => auth()->user()?->hasRole('admin')),
+                Forms\Components\Hidden::make('status')
+                    ->default('pending')
+                    ->visible(fn () => auth()->user()?->hasRole('vendor')),
+                Forms\Components\Hidden::make('vendor_id')
+                    ->default(fn() => auth()->user()?->vendor?->id)
+                    ->visible(fn() => auth()->user()?->hasRole('vendor')), // auto-assign for vendors
             ]);
     }
 

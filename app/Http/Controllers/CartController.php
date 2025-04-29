@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\UpdateCartRequest;
 use Inertia\Inertia;
 use App\Models\Cart;
 use App\Models\Product;
 
+use App\Services\CartService;
+
 class CartController extends Controller
 {
+    protected $cartService;
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
+    }
     public function index()
     {
         $user = auth()->user();
@@ -53,57 +63,27 @@ class CartController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreCartRequest $request)
     {
-        // Add product to cart
         $user = $request->user();
-        $data = $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
-        // Find or create the user's active cart
-        $cart = \App\Models\Cart::firstOrCreate(
-            [
-                'user_id' => $user->id,
-                'status' => 'active',
-            ]
-        );
-
-        // Add or update the product in the cart
-        $cartProduct = \App\Models\CartProduct::where('cart_id', $cart->id)
-            ->where('product_id', $data['product_id'])
-            ->first();
-        if ($cartProduct) {
-            // Update quantity (add to existing)
-            $cartProduct->quantity += $data['quantity'];
-            $cartProduct->save();
-        } else {
-            // Create new cart product
-            \App\Models\CartProduct::create([
-                'cart_id' => $cart->id,
-                'product_id' => $data['product_id'],
-                'quantity' => $data['quantity'],
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'تم الاضافه للسلة');
+        $data = $request->validated();
+        $message = $this->cartService->addToCart($user, $data['product_id'], $data['quantity']);
+        return redirect()->back()->with('success', $message);
     }
 
-    public function update(Request $request, $id)
+ 
+    public function update(UpdateCartRequest $request, $id)
     {
         $user = $request->user();
         $cart = \App\Models\Cart::where('user_id', $user->id)->where('status', 'active')->first();
         if (!$cart) {
-            return redirect()->back()->with('error', 'Cart not found.');
+            return redirect()->back()->with('error', 'لا يوجد سلة');
         }
         $cartProduct = \App\Models\CartProduct::where('cart_id', $cart->id)->where('id', $id)->first();
         if (!$cartProduct) {
-            return redirect()->back()->with('error', 'Cart item not found.');
+            return redirect()->back()->with('error', 'العنصر غير موجود في السلة');
         }
-        $data = $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
+        $data = $request->validated();
         $cartProduct->quantity = $data['quantity'];
         $cartProduct->save();
         return redirect()->back()->with('success', 'تم التحديث السله');
@@ -114,11 +94,11 @@ class CartController extends Controller
         $user = $request->user();
         $cart = \App\Models\Cart::where('user_id', $user->id)->where('status', 'active')->first();
         if (!$cart) {
-            return redirect()->back()->with('error', 'Cart not found.');
+            return redirect()->back()->with('error', 'لا يوجد سلة ');
         }
         $cartProduct = \App\Models\CartProduct::where('cart_id', $cart->id)->where('id', $id)->first();
         if (!$cartProduct) {
-            return redirect()->back()->with('error', 'Cart item not found.');
+            return redirect()->back()->with('error', 'العنصر غير موجود في السلة');
         }
         $cartProduct->delete();
         return redirect()->back()->with('success', 'تم الحذف من السلة');

@@ -3,12 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreOrderRequest;
 use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\User;
 
+use App\Services\OrderService;
+
 class OrderController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     public function index(Request $request)
     {
         $user = $request->user();
@@ -26,46 +35,10 @@ class OrderController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'cart_id' => 'required|exists:carts,id',
-            'status' => 'required|string',
-            'shipping_address' => 'nullable|string',
-            'city' => 'nullable|string',
-            'payment_method' => 'nullable|string',
-        ]);
-        $order = Order::create(array_merge($data, ['total' => 0]));
-
-        // Save order items (order details) with offers applied
-        $cartProducts = \App\Models\CartProduct::where('cart_id', $data['cart_id'])->get();
-        $offerService = new \App\Services\OfferService();
-        foreach ($cartProducts as $cartProduct) {
-            $product = $cartProduct->product;
-            $discountedPrice = $offerService->getDiscountedPrice($product);
-            \App\Models\OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $cartProduct->product_id,
-                'quantity' => $cartProduct->quantity,
-                'price' => $discountedPrice, // Save discounted price at time of order
-            ]);
-        }
-
-        // Mark the cart as ordered (do NOT delete it)
-        $cart = \App\Models\Cart::find($data['cart_id']);
-        if ($cart) {
-            $cart->status = 'ordered';
-            $cart->save();
-        }
-
-        // Recalculate and update the order total after discounts
-        $total = $order->orderItems()->sum(\DB::raw('price * quantity'));
-        $order->total = $total;
-        $order->save();
-
-        // Return order with items
-        $order->load('orderItems.product');
+        $data = $request->validated();
+        $order = $this->orderService->placeOrder($request->user(), $data);
         return response()->json($order, 201);
     }
 

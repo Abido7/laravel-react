@@ -3,11 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
 use Inertia\Inertia;
 use App\Models\Product;
 
+use App\Services\ProductService;
+
 class ProductController extends Controller
 {
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
     public function index(Request $request)
     {
         $query = Product::with(['category', 'offers']);
@@ -42,39 +51,24 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'image' => 'nullable|string',
-        ]);
+        $data = $request->validated();
         $product = Product::create($data);
         return response()->json($product, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'image' => 'nullable|string',
-        ]);
+        $data = $request->validated();
         $product->update($data);
         return response()->json($product);
     }
 
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return response()->json(['message' => 'تم الحذف']);
+        $message = $this->productService->deleteProduct($id);
+        return response()->json(['message' => $message]);
     }
 }

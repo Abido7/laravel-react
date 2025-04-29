@@ -16,8 +16,8 @@ class EnsureUserIsAdmin
             return redirect('/login');  // Redirect to login if the user is not logged in
         }
 
-        // If the user is authenticated but not an admin, redirect to the homepage
-        if (!Auth::user()->is_admin) {
+        // If the user is authenticated but does not have the 'admin' role, redirect to the homepage
+        if (!Auth::user()->hasAnyRole(['admin', 'vendor'])) {
             // Avoid redirect loop if already on the homepage
             if ($request->is('/')) {
                 return $next($request);  // Allow access if already on homepage
@@ -25,7 +25,7 @@ class EnsureUserIsAdmin
             return redirect('/');  // Redirect non-admins to the homepage
         }
 
-        // If the user is an admin, allow the request to continue
+        // If the user has the 'admin' role, allow the request to continue
         // Avoid redirect loop if already on the /admin page
         if ($request->is('admin*')) {
             return $next($request);  // Allow access if already on an admin page

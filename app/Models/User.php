@@ -6,9 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use HasRoles;
+    
     public function wishlist()
     {
         return $this->belongsToMany(\App\Models\Product::class, 'wishlists')->withTimestamps();
@@ -30,6 +33,11 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class);
     }
 
+    public function vendor()
+    {
+        return $this->hasOne(\App\Models\Vendor::class);
+    }
+
     // If you want to relate payments:
     // public function payments()
     // {
@@ -48,6 +56,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'type',
+        'status',
     ];
 
     /**
@@ -73,3 +84,5 @@ class User extends Authenticatable
         ];
     }
 }
+
+  

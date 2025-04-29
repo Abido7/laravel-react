@@ -15,6 +15,27 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderResource extends Resource
 {
+    protected static ?string $navigationGroup = 'البائعين';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+        if ($user && $user->hasRole('vendor')) {
+            // Only show orders that contain this vendor's products
+            return parent::getEloquentQuery()
+                ->whereHas('orderItems.product', function ($query) use ($user) {
+                    $query->where('vendor_id', $user->vendor->id ?? 0);
+                });
+        }
+        return parent::getEloquentQuery();
+    }
+
+    public static function canViewAny(): bool
+    {
+        // Only vendors and admins can see this resource in navigation
+        return auth()->check() && auth()->user()->hasAnyRole(['admin', 'vendor']);
+    }
+
     protected static ?string $navigationLabel = 'الطلبات';
     protected static ?string $label = 'طلب';
     protected static ?string $pluralLabel = 'الطلبات';

@@ -22,7 +22,7 @@ class Cart extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'cart_product')->withPivot('quantity');
     }
 
     public function cartProducts()
@@ -30,9 +30,4 @@ class Cart extends Model
         return $this->hasMany(\App\Models\CartProduct::class, 'cart_id');
     }
 
-    // If each cart has one order:
-    // public function order()
-    // {
-    //     return $this->hasOne(Order::class);
-    // }
 }

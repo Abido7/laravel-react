@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import styles from '../../Auth.module.css';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status, canResetPassword, success }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -29,9 +29,9 @@ export default function Login({ status, canResetPassword }) {
                     <i className="bi bi-person-circle"></i>
                 </div>
                 <div className={styles['auth-title']}>تسجيل الدخول</div>
-                {status && (
+                {success && (
                     <div className="alert alert-success mb-4 py-2 px-3">
-                        {status}
+                        {success}
                     </div>
                 )}
                 <form onSubmit={submit} className={styles['auth-form']}>
